@@ -1,0 +1,55 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>futu</title>
+
+    <script language="javascript" type="text/javascript">
+        function init() {
+            doConnect();
+        }
+
+        function doConnect() {
+            websocket = new WebSocket("ws://host:port/");
+            websocket.onopen = function (evt) { onOpen(evt) };
+            websocket.onclose = function (evt) { onClose(evt) };
+            websocket.onmessage = function (evt) { onMessage(evt) };
+            websocket.onerror = function (evt) { onError(evt) };
+        }
+
+        function onOpen(evt) {
+            writeToScreen("connected\n");
+        }
+
+        function onClose(evt) {
+            writeToScreen("disconnected\n");
+        }
+
+        function onMessage(evt) {
+            writeToScreen("response: " + evt.data + '\n');
+        }
+
+        function onError(evt) {
+            writeToScreen('error: ' + evt.data + '\n');
+        }
+
+        function writeToScreen(message) {
+            document.myform.outputtext.value += message
+            document.myform.outputtext.scrollTop = document.myform.outputtext.scrollHeight;
+        }
+
+        window.addEventListener("load", init, false);
+    </script>
+</head>
+
+<body>
+    <form name="myform">
+        <p>
+            <textarea name="outputtext" rows="20" cols="50"></textarea>
+        </p>
+    </form>
+</body>
+
+</html>
