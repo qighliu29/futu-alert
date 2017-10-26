@@ -7,16 +7,46 @@
     <title>futu</title>
 
     <script language="javascript" type="text/javascript">
+        function showNotification(note) {
+            if (("Notification" in window) && (Notification.permission === "granted")) {
+                var n = new Notification(note.title, note);
+                n.onclick = function () {
+                    console.log(note.index);
+                };
+            } else {
+                console.log("Your browser does not support Notification or it is not granted");
+            }
+        }
+
         function init() {
             doConnect();
         }
 
         function doConnect() {
             websocket = new WebSocket("ws://host:port/");
-            websocket.onopen = function (evt) { onOpen(evt) };
-            websocket.onclose = function (evt) { onClose(evt) };
-            websocket.onmessage = function (evt) { onMessage(evt) };
-            websocket.onerror = function (evt) { onError(evt) };
+            websocket.onopen = function (evt) {
+                onOpen(evt)
+            };
+            websocket.onclose = function (evt) {
+                onClose(evt)
+            };
+            websocket.onmessage = function (evt) {
+                onMessage(evt)
+            };
+            websocket.onerror = function (evt) {
+                onError(evt)
+            };
+
+            dataTable = document.createElement('table');
+            document.body.appendChild(dataTable);
+
+            if (("Notification" in window) && !(Notification.permission === "granted")) {
+                Notification.requestPermission(function (status) {
+                    if (Notification.permission !== status) {
+                        Notification.permission = status;
+                    }
+                });
+            }
         }
 
         function onOpen(evt) {
@@ -29,6 +59,47 @@
 
         function onMessage(evt) {
             writeToScreen("response: " + evt.data + '\n');
+
+            var dataObj = JSON.parse(evt.data);
+
+            var tr = document.createElement('tr');
+
+            var tdCode = document.createElement('td');
+            var code = document.createTextNode(dataObj["code"]["0"]);
+            tdCode.appendChild(code);
+
+            var tdTime = document.createElement('td');
+            var time = document.createTextNode(dataObj["time"]["0"]);
+            tdTime.appendChild(time);
+
+            var tdPrice = document.createElement('td');
+            var price = document.createTextNode(dataObj["price"]["0"]);
+            tdPrice.appendChild(price);
+
+            var tdVolume = document.createElement('td');
+            var volume = document.createTextNode(dataObj["volume"]["0"]);
+            tdVolume.appendChild(volume);
+
+            var tdDirect = document.createElement('td');
+            var direct = document.createTextNode(dataObj["ticker_direction"]["0"]);
+            tdDirect.appendChild(direct);
+
+            tr.appendChild(tdCode);
+            tr.appendChild(tdTime);
+            tr.appendChild(tdPrice);
+            tr.appendChild(tdVolume);
+            tr.appendChild(tdDirect);
+
+            // dataTable.appendChild(tr);
+            dataTable.insertBefore(tr, dataTable.firstChild);
+
+            showNotification({
+                title: dataObj["code"]["0"],
+                dir: "ltr",
+                lang: "utf-8",
+                icon: "/icon.jpg",
+                body: `[${dataObj["time"]["0"]}] ${dataObj["volume"]["0"]} ${dataObj["ticker_direction"]["0"]}`
+            })
         }
 
         function onError(evt) {
