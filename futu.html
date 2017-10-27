@@ -6,6 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>futu</title>
 
+    <style>
+        .arc {
+            transition: transform 0.6s;
+        }
+        .arc:hover {
+            transform: scale(1.1);
+        }
+    </style>
+
     <script language="javascript" type="text/javascript">
         function showNotification(note) {
             if (("Notification" in window) && (Notification.permission === "granted")) {
@@ -116,11 +125,64 @@
 </head>
 
 <body>
+    <svg width="960" height="500"></svg>
     <form name="myform">
         <p>
             <textarea name="outputtext" rows="20" cols="50"></textarea>
         </p>
     </form>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3.min.js"></script>
+    <script>
+        var svg = d3.select("svg"),
+            width = +svg.attr("width"),
+            height = +svg.attr("height"),
+            radius = Math.min(width, height) / 2,
+            g = svg.append("g").attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+        var color = d3.scaleOrdinal(["#98abc5", "#8a89a6", "#7b6888"]);
+
+        var pie = d3.pie()
+            .sort(null)
+            .value(function (d) {
+                return d.volume;
+            });
+
+        var path = d3.arc()
+            .outerRadius(radius - 10)
+            .innerRadius(0);
+
+        var label = d3.arc()
+            .outerRadius(radius - 40)
+            .innerRadius(radius - 40);
+
+        var data = [{
+            volume: 200
+        }, {
+            volume: 100
+        }, {
+            volume: 200
+        }];
+
+        var arc = g.selectAll(".arc")
+            .data(pie(data))
+            .enter().append("g")
+            .attr("class", "arc");
+
+        arc.append("path")
+            .attr("d", path)
+            .attr("fill", function (d, i) {
+                return color(i);
+            });
+
+        arc.append("text")
+            .attr("transform", function (d) {
+                return "translate(" + label.centroid(d) + ")";
+            })
+            .attr("dy", "0.35em")
+            .text(function (d) {
+                return d.data.volume;
+            });
+    </script>
 </body>
 
 </html>
