@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         @keyframes blinker {
             50% {
@@ -53,6 +55,11 @@
             background-color: pink;
             animation: fade-out 1s linear 1 normal forwards;
         }
+
+        .modal-footer {
+            background-color: cyan;
+            animation: fade-out 1s linear 1 normal forwards;
+        }
     </style>
     <title>Document</title>
 </head>
@@ -61,6 +68,19 @@
     <main>
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
+                <ul id="preferences" class="nav navbar-nav navbar-left">
+                    <li>
+                        <a>
+                            <i class="fa fa-gear"></i>
+                        </a>
+                    </li>
+                </ul>
+                <form id="settings" class="navbar-form navbar-left" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
                 <ul id="connect-state" class="nav navbar-nav navbar-right">
                     <li>
                         <a>connected</a>
@@ -69,7 +89,7 @@
             </div>
         </nav>
         <div id="content" class="container">
-            <table id="ticker" cellspacing="0" cellpadding="2" width="100%" border="0" data-toggle="table">
+            <table id="ticker" cellspacing="0" cellpadding="2" width="100%" border="0" data-toggle="table" class="table table-no-bordered">
                 <thead>
                     <tr>
                         <th style="width: 20%;">code</th>
@@ -80,7 +100,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="clickable-row" data-href="UWT">
+                    <tr data-code="UWT" data-toggle="modal" data-target="#basicModal">
                         <td>UWT</td>
                         <td>2017-10-30</td>
                         <td>13.67</td>
@@ -105,8 +125,33 @@
             </table>
         </div>
     </main>
+    <div class="modal fade" id="basicModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Basic Modal</h4>
+                </div>
+                <div class="modal-body">
+                    <h3>Modal Body</h3>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#ticker').on('click-row.bs.table', function (e, row, $element) {
+                console.log($element.data('code'));
+            });
+        });
+    </script>
 </body>
 
 </html>
