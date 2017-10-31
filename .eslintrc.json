@@ -1,0 +1,17 @@
+{
+    "extends": ["airbnb-base", "plugin:vue/recommended"],
+    "env": {
+        "browser": true
+    },
+    "plugins": [
+        "html"
+    ],
+    "rules": {
+        "indent": [
+            "error",
+            4
+        ],
+        "import/no-extraneous-dependencies": "off",
+        "import/no-unresolved": "off"
+    }
+}

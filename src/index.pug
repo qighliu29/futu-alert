@@ -1,0 +1,15 @@
+//- index.pug
+
+extends template.pug
+
+block dummy
+    include ~html-webpack-template-pug/mixins.pug
+
+block css
+    +injectExtrasHead
+
+block scripts
+    +injectExtrasBody
+
+block content
+    +appMount
