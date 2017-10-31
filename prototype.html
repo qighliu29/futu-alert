@@ -60,6 +60,47 @@
             background-color: cyan;
             animation: fade-out 1s linear 1 normal forwards;
         }
+
+        @keyframes bounceInRight {
+            from,
+            60%,
+            75%,
+            90%,
+            to {
+                animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+            }
+
+            from {
+                opacity: 0;
+                transform: translate3d(3000px, 0, 0) skewX(-45deg);
+            }
+
+            60% {
+                opacity: 1;
+                transform: translate3d(-25px, 0, 0) skewX(5deg);
+            }
+
+            75% {
+                transform: translate3d(10px, 0, 0) skewX(2deg);
+            }
+
+            90% {
+                transform: translate3d(-5px, 0, 0) skewX(0deg);
+            }
+
+            to {
+                transform: none;
+            }
+        }
+
+        .bounceInRight {
+            animation-name: bounceInRight;
+        }
+
+        .animated {
+            animation-duration: 1s;
+            animation-fill-mode: both;
+        }
     </style>
     <title>Document</title>
 </head>
@@ -75,7 +116,7 @@
                         </a>
                     </li>
                 </ul>
-                <form id="settings" class="navbar-form navbar-left" role="search">
+                <form id="settings" class="navbar-form navbar-left bounceInRight animated" role="search">
                     <div class="form-group">
                         <input type="text" class="form-control" placeholder="Search">
                     </div>
