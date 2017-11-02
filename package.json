@@ -5,6 +5,7 @@
   "repository": "https://github.com/qighliu29/futu-alert.git",
   "author": "swatekh <qighliu29@gmail.com>",
   "scripts": {
+    "start": "webpack-dev-server --env development",
     "build": "webpack --env production --display-reasons --display-used-exports --display-provided-exports --display-chunks --display-max-modules 99999 --display-origins --display-entrypoints",
     "clean": "rimraf -rf ./dist",
     "lint:js": "eslint --ext .js,.vue src test --cache",
@@ -13,6 +14,10 @@
   "license": "MIT",
   "devDependencies": {
     "autoprefixer": "^7.1.6",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
     "css-loader": "^0.28.7",
     "eslint": "^4.10.0",
     "eslint-config-airbnb-base": "^12.1.0",
@@ -32,6 +37,7 @@
     "vue-loader": "^13.3.0",
     "vue-style-loader": "^3.0.3",
     "vue-template-compiler": "^2.5.2",
-    "webpack": "^3.8.1"
+    "webpack": "^3.8.1",
+    "webpack-dev-server": "^2.9.3"
   }
 }

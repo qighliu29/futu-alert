@@ -1,10 +1,9 @@
-import Vue from 'vue'; // eslint-disable-line import/extensions
+import store from './store';
 import App from './App.vue';
 
-Vue.config.productionTip = false;
-
-// eslint-disable-next-line no-new
+// eslint-disable-next-line no-new,no-undef
 new Vue({
     el: '#app',
+    store,
     render: h => h(App),
 });

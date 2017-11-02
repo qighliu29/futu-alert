@@ -6,7 +6,10 @@ const PATHS = {
     dist: path.join(__dirname, 'dist'),
 };
 
-module.exports = {
+const vuejs = 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.runtime.js';
+const vuemin = 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.runtime.min.js';
+
+module.exports = env => ({
     entry: path.join(PATHS.src, 'app.js'),
     output: {
         path: PATHS.dist,
@@ -24,23 +27,26 @@ module.exports = {
                 loader: 'eslint-loader',
                 options: {
                     formatter: require('eslint-friendly-formatter'), // eslint-disable-line global-require
-                }
-            }
+                },
+            },
         }, {
             test: /\.vue$/,
             use: {
                 loader: 'vue-loader',
                 options: {
                     loaders: {
+                        js: [
+                            'babel-loader',
+                        ],
                         scss: [
                             'vue-style-loader',
                             'css-loader',
                             'postcss-loader',
                             'sass-loader',
-                        ]
-                    }
-                }
-            }
+                        ],
+                    },
+                },
+            },
         }],
     },
     externals: {
@@ -48,8 +54,14 @@ module.exports = {
             root: 'Vue',
             commonjs: 'vue',
             commonjs2: 'vue',
-            amd: 'vue'
-        }
+            amd: 'vue',
+        },
+        vuex: {
+            root: 'Vuex',
+            commonjs: 'vuex',
+            commonjs2: 'vuex',
+            amd: 'vuex',
+        },
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -64,16 +76,17 @@ module.exports = {
                 head: [
                     'https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css',
                     'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css',
-                    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
+                    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css',
                 ],
                 // scripts
                 body: [
                     'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js',
                     'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js',
-                    'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.js',
-                    'https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.runtime.min.js',
-                ]
-            }
-        })
-    ]
-};
+                    'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.js',
+                    env === 'development' ? vuejs : vuemin,
+                    'https://cdnjs.cloudflare.com/ajax/libs/vuex/3.0.0/vuex.min.js',
+                ],
+            },
+        }),
+    ],
+});
