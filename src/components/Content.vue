@@ -21,7 +21,11 @@ export default {
     this.$store.commit({
       type: "ADD_TICKER_LISTENER",
       listener: function() {
-        const row = this.$store.getters.lastest;
+        const record = this.$store.getters.lastest;
+        const row = {
+          ...record,
+          time: record.time.toLocaleString()
+        };
         $("#ticker").bootstrapTable("prepend", [row]);
       }.bind(this)
     });
@@ -35,6 +39,8 @@ export default {
           return { classes: "bg-danger" };
         } else if (row["direction"] === "SELL") {
           return { classes: "bg-success" };
+        } else {
+          return { classes: "" };
         }
       }
     });

@@ -1,6 +1,13 @@
 <template>
     <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container">
+            <ul id="server-conf" class="nav navbar-nav navbar-left">
+                <li>
+                    <a id="server-button" data-toggle="modal" data-target="#serverModal" data-keyboard="true">
+                        <i class="fa fa-home"></i>
+                    </a>
+                </li>
+            </ul>
             <settings></settings>
             <ul id="connect-state" class="nav navbar-nav navbar-right">
                 <li>
