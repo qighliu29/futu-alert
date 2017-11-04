@@ -6,8 +6,17 @@ const PATHS = {
     dist: path.join(__dirname, 'dist'),
 };
 
-const vuejs = 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.runtime.js';
-const vuemin = 'https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.runtime.min.js';
+const SCRIPTS = [
+    'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery',
+    'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap',
+    'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table',
+    'https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.runtime',
+    'https://cdnjs.cloudflare.com/ajax/libs/vuex/3.0.0/vuex',
+    'https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.5/howler', // howler has a 'core' dist
+    'https://cdnjs.cloudflare.com/ajax/libs/push.js/1.0.5/push',
+    'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment',
+    'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.9.0/bootstrap-slider',
+];
 
 module.exports = env => ({
     entry: path.join(PATHS.src, 'app.js'),
@@ -90,18 +99,10 @@ module.exports = env => ({
                     'https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css',
                     'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css',
                     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css',
+                    'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.9.0/css/bootstrap-slider.min.css',
                 ],
                 // scripts
-                body: [
-                    'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js',
-                    'https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js',
-                    'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.js',
-                    env === 'development' ? vuejs : vuemin,
-                    'https://cdnjs.cloudflare.com/ajax/libs/vuex/3.0.0/vuex.min.js',
-                    'https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.5/howler.core.min.js',
-                    'https://cdnjs.cloudflare.com/ajax/libs/push.js/1.0.5/push.min.js',
-                    'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js',
-                ],
+                body: env === 'development' ? SCRIPTS.map(url => `${url}.js`) : SCRIPTS.map(url => `${url}.min.js`),
             },
         }),
     ],
