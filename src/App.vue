@@ -6,6 +6,7 @@
     </main>
     <server-dialog></server-dialog>
     <websocket></websocket>
+    <notifier></notifier>
   </div>
 </template>
 
@@ -16,7 +17,7 @@ import ServerDialog from "./components/ServerDialog.vue";
 
 Vue.component("websocket", {
   render() {
-    return '';
+    return "";
   },
   data: function() {
     return {
@@ -27,7 +28,7 @@ Vue.component("websocket", {
   watch: {
     // watch 'serverAddress' so we can create new websocket connection
     // when server address is changed
-    'serverAddress.address': function(newValue, oldValue) {
+    "serverAddress.address": function(newValue, oldValue) {
       if (newValue == oldValue) {
         return;
       }
@@ -56,9 +57,10 @@ Vue.component("websocket", {
       this.ws.onmessage = e => {
         const dataObj = JSON.parse(e.data);
 
+        console.log(dataObj["time"]["0"]);
         const ticker = {
           code: dataObj["code"]["0"],
-          time: Date.parse(dataObj["time"]["0"]),
+          time: moment(dataObj["time"]["0"], "YYYY-MM-DD HH:mm:ss"),
           price: +dataObj["price"]["0"],
           volume: +dataObj["volume"]["0"],
           direction: dataObj["ticker_direction"]["0"].slice(3)
@@ -77,6 +79,31 @@ Vue.component("websocket", {
   },
   created: function() {
     this.createConnection();
+  }
+});
+
+Vue.component("notifier", {
+  render() {
+    return "";
+  },
+  created: function() {
+    this.$store.commit({
+      type: "ADD_TICKER_LISTENER",
+      listener: function() {
+        const record = this.$store.getters.lastest;
+
+        // push notification
+        Push.create(`${record.code}`, {
+          body: `[${record.direction}] ${record.volume}`,
+          timeout: 3000
+        });
+
+        // play sound
+        new Howl({
+          src: ["/assets/audio/jingle-bells-sms.mp3"]
+        }).play();
+      }.bind(this)
+    });
   }
 });
 

@@ -24,15 +24,16 @@ export default {
   methods: {
     toggleForm() {
       this.showForm = !this.showForm;
-    //   $("#ticker").bootstrapTable("prepend", [
-    //     {
-    //       code: "UWT",
-    //       price: 12300,
-    //       time: new Date(),
-    //       volume: 1200,
-    //       direction: "BUY"
-    //     }
-    //   ]);
+
+      //   $("#ticker").bootstrapTable("prepend", [
+      //     {
+      //       code: "UWT",
+      //       price: 12300,
+      //       time: new Date(),
+      //       volume: 1200,
+      //       direction: "BUY"
+      //     }
+      //   ]);
     }
   }
 };

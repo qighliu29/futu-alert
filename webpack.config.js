@@ -62,6 +62,19 @@ module.exports = env => ({
             commonjs2: 'vuex',
             amd: 'vuex',
         },
+        howl: {
+            root: 'Howl',
+            commonjs: 'howl',
+            commonjs2: 'howl',
+            amd: 'howl',
+        },
+        push: {
+            root: 'Push',
+            commonjs: 'push',
+            commonjs2: 'push',
+            amd: 'push',
+        },
+        moment: 'moment',
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -85,6 +98,9 @@ module.exports = env => ({
                     'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.js',
                     env === 'development' ? vuejs : vuemin,
                     'https://cdnjs.cloudflare.com/ajax/libs/vuex/3.0.0/vuex.min.js',
+                    'https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.5/howler.core.min.js',
+                    'https://cdnjs.cloudflare.com/ajax/libs/push.js/1.0.5/push.min.js',
+                    'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment.min.js',
                 ],
             },
         }),

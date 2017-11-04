@@ -24,7 +24,7 @@ export default {
         const record = this.$store.getters.lastest;
         const row = {
           ...record,
-          time: record.time.toLocaleString()
+          time: record.time.format("HH:mm:ss")
         };
         $("#ticker").bootstrapTable("prepend", [row]);
       }.bind(this)

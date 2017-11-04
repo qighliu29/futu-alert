@@ -37,6 +37,9 @@ export default {
       this.$refs.input.value = "";
       $("#serverModal").modal("toggle");
     }
+  },
+  mounted: function() {
+    $("#serverModal").modal("show");
   }
 };
 </script>

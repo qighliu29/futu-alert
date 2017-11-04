@@ -1,5 +1,5 @@
 <template>
-  <a :class="stateClass">{{stateString}}</a>
+  <a id="state-label" :class="stateClass">{{stateString}}</a>
 </template>
 
 <script>
@@ -11,11 +11,11 @@ const COLORS = {
 const StateIndicator = {
   props: ["stateString", "state"],
   computed: {
-    stateClass: function () {
-      if (this.state*1 > 0) {
-        return 'green-blink';
+    stateClass: function() {
+      if (this.state * 1 > 0) {
+        return "green-blink";
       } else {
-        return 'red';
+        return "red";
       }
     }
   }
@@ -31,11 +31,14 @@ export default Object.assign({}, COLORS, StateIndicator);
   }
 }
 a {
+  font-size: 20px;
+  text-transform: uppercase;
+
   &::before {
     display: inline-block;
     content: "";
-    width: 10px;
-    height: 10px;
+    width: 15px;
+    height: 15px;
     border-radius: 50%;
     margin-right: 5px;
   }
@@ -50,6 +53,13 @@ a {
       opacity: 1;
       animation: blinker 1s linear infinite;
     }
+  }
+}
+
+#state-label {
+  &:hover,
+  &:focus {
+    color: #ffffff;
   }
 }
 </style>
