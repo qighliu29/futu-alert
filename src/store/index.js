@@ -9,11 +9,15 @@ const debug = process.env.NODE_ENV === 'development';
 
 const initState = {
     tickerListener: [],
+    autoMerging: false,
 };
 
 const mutations = {
     [muttypes.ADD_TICKER_LISTENER](state, { listener }) {
         state.tickerListener.push(listener);
+    },
+    [muttypes.TOGGLE_AUTO_MERGING](state) {
+        state.autoMerging = !state.autoMerging;
     },
 };
 

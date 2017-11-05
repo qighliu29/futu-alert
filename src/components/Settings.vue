@@ -8,7 +8,7 @@
         <li>
             <ul id="settings-form" v-show="showForm" class="nav navbar-nav animated bounceInRight">
                 <li>
-                    <p id="merge-check" class="navbar-text checkbox-done">auto merging</p>
+                    <p id="merge-check" class="navbar-text" :class="autoMergingClass" @click="toggleAutoMerge">auto merging</p>
                 </li>
                 <li v-show="showLabel" @mouseenter="toggleSlider">
                     <a>
@@ -31,6 +31,9 @@ export default {
     showSlider: false
   }),
   computed: {
+    ...Vuex.mapState({
+      autoMergingClass: state => (state.autoMerging ? "auto-merge" : "")
+    }),
     showLabel: function() {
       return !this.showSlider;
     }
@@ -39,25 +42,28 @@ export default {
     toggleForm() {
       this.showForm = !this.showForm;
 
-      //   $("#ticker").bootstrapTable("prepend", [
-      //     {
-      //       code: "UWT",
-      //       price: 12300,
-      //       time: new Date(),
-      //       volume: 1200,
-      //       direction: "BUY"
-      //     }
-      //   ]);
+      // $("#ticker").bootstrapTable("prepend", [
+      //   {
+      //     code: "UWT",
+      //     price: 12300,
+      //     time: moment(new Date()),
+      //     volume: 1200,
+      //     direction: "BUY"
+      //   }
+      // ]);
     },
     toggleSlider() {
       this.showSlider = !this.showSlider;
-    }
+    },
+    ...Vuex.mapMutations({
+      toggleAutoMerge: "TOGGLE_AUTO_MERGING"
+    })
   },
   mounted: function() {
     $("#time-slider").slider({
       min: 0,
       max: 60,
-      value: 60,
+      value: 30,
       tooltip_position: "bottom"
     });
   }
@@ -112,16 +118,18 @@ export default {
 
 #merge-check {
   padding-left: 20px;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url("/assets/image/box.svg");
+
+  &.auto-merge {
+    background-image: url("/assets/image/done.svg");
+  }
 }
 
 #settings-button {
   cursor: pointer;
-}
-
-.checkbox-done {
-  background-image: url("/assets/image/done.svg");
-  background-repeat: no-repeat;
-  background-size: contain;
 }
 </style>
 

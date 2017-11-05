@@ -1,6 +1,6 @@
 <template>
   <div id="content" class="container">
-      <table id="ticker" width="100%" data-toggle="table">
+      <table id="ticker" width="100%" data-toggle="table" data-sort-name="time" data-sort-order="desc">
             <thead>
                 <tr>
                     <th data-width="20%" data-field="code">code</th>
@@ -18,15 +18,33 @@
 <script>
 export default {
   created: function() {
+    this.$store.watch(
+      state => state.autoMerging,
+      function(auto) {
+        if (auto) {
+          $("#ticker").bootstrapTable("load", [
+            ...this.$store.getters.mergedRecords
+          ]);
+        } else {
+          $("#ticker").bootstrapTable("load", [
+            ...this.$store.state.ticker.records
+          ]);
+        }
+      }.bind(this)
+    );
+
     this.$store.commit({
       type: "ADD_TICKER_LISTENER",
       listener: function() {
-        const record = this.$store.getters.lastest;
-        const row = {
-          ...record,
-          time: record.time.format("HH:mm:ss")
-        };
-        $("#ticker").bootstrapTable("prepend", [row]);
+        if (this.$store.state.autoMerging) {
+          $("#ticker").bootstrapTable("load", [
+            ...this.$store.state.ticker.mergedRecords
+          ]);
+        } else {
+          $("#ticker").bootstrapTable("load", [
+            ...this.$store.state.ticker.records
+          ]);
+        }
       }.bind(this)
     });
   },
@@ -43,6 +61,9 @@ export default {
           return { classes: "" };
         }
       }
+    });
+    $("th[data-field='time']").data("formatter", function(value, row, index) {
+      return value.format("HH:mm:ss");
     });
   }
 };

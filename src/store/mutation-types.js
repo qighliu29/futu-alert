@@ -7,3 +7,4 @@ export const ADD_TICKER_DATA = 'ADD_TICKER_DATA';
 
 // general
 export const ADD_TICKER_LISTENER = 'ADD_TICKER_LISTENER';
+export const TOGGLE_AUTO_MERGING = 'TOGGLE_AUTO_MERGING';
