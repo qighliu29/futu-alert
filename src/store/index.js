@@ -10,6 +10,7 @@ const debug = process.env.NODE_ENV === 'development';
 const initState = {
     tickerListener: [],
     autoMerging: false,
+    currentCode: '',
 };
 
 const mutations = {
@@ -18,6 +19,9 @@ const mutations = {
     },
     [muttypes.TOGGLE_AUTO_MERGING](state) {
         state.autoMerging = !state.autoMerging;
+    },
+    [muttypes.SET_CURRENT_CODE](state, { code }) {
+        state.currentCode = code;
     },
 };
 

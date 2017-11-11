@@ -5,6 +5,7 @@
       <main-content></main-content>
     </main>
     <server-dialog></server-dialog>
+    <chart-dialog></chart-dialog>
     <websocket></websocket>
     <notifier></notifier>
   </div>
@@ -14,6 +15,7 @@
 import Topbar from "./components/Topbar.vue";
 import MainContent from "./components/Content.vue";
 import ServerDialog from "./components/ServerDialog.vue";
+import ChartDialog from "./components/ChartDialog.vue";
 
 Vue.component("websocket", {
   render() {
@@ -57,7 +59,6 @@ Vue.component("websocket", {
       this.ws.onmessage = e => {
         const dataObj = JSON.parse(e.data);
 
-        console.log(dataObj["time"]["0"]);
         const ticker = {
           code: dataObj["code"]["0"],
           time: moment(dataObj["time"]["0"], "YYYY-MM-DD HH:mm:ss"),
@@ -111,33 +112,8 @@ export default {
   components: {
     Topbar,
     MainContent,
-    ServerDialog
-  },
-  created: function() {
-    // const ws = new WebSocket(`ws://${this.$store.state.wsServer.address}/`);
-    // ws.onopen = e => {
-    //   this.$store.commit({
-    //     type: "SET_CONNECT_STATE",
-    //     connected: true
-    //   });
-    // };
-    // ws.onmessage = e => {
-    //   const dataObj = JSON.parse(e.data);
-    //   const ticker = {
-    //     code: dataObj["code"]["0"],
-    //     time: Date.parse(dataObj["time"]["0"]),
-    //     price: +dataObj["price"]["0"],
-    //     volume: +dataObj["volume"]["0"],
-    //     direction: dataObj["ticker_direction"]["0"].slice(3)
-    //   };
-    //   this.$store.commit({
-    //     type: "ADD_TICKER_DATA",
-    //     record: ticker
-    //   });
-    //   this.$store.dispatch({
-    //     type: "fireTickerUpdate"
-    //   });
-    // };
+    ServerDialog,
+    ChartDialog
   }
 };
 </script>

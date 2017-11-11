@@ -22,10 +22,12 @@ export default {
       state => state.autoMerging,
       function(auto) {
         if (auto) {
+          console.log(this.$store.getters.mergedRecords);
           $("#ticker").bootstrapTable("load", [
             ...this.$store.getters.mergedRecords
           ]);
         } else {
+          console.log(this.$store.state.ticker.records);
           $("#ticker").bootstrapTable("load", [
             ...this.$store.state.ticker.records
           ]);
@@ -37,10 +39,12 @@ export default {
       type: "ADD_TICKER_LISTENER",
       listener: function() {
         if (this.$store.state.autoMerging) {
+          console.log(this.$store.getters.mergedRecords);
           $("#ticker").bootstrapTable("load", [
             ...this.$store.state.ticker.mergedRecords
           ]);
         } else {
+          console.log(this.$store.state.ticker.records);
           $("#ticker").bootstrapTable("load", [
             ...this.$store.state.ticker.records
           ]);
@@ -65,6 +69,16 @@ export default {
     $("th[data-field='time']").data("formatter", function(value, row, index) {
       return value.format("HH:mm:ss");
     });
+    $("#ticker").data(
+      "onClickRow",
+      function(row) {
+        this.$store.commit({
+          type: "SET_CURRENT_CODE",
+          code: row["code"]
+        });
+        $("#chartModal").modal("show");
+      }.bind(this)
+    );
   }
 };
 </script>
