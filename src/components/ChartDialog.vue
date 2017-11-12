@@ -4,7 +4,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">{{ code }}</h4>
+                    <h4 class="modal-title">{{ ticker.code }}</h4>
                 </div>
                 <div class="modal-body">
                     <svg :width="width" :height="height" style="display: block; margin: 0 auto;">
@@ -36,7 +36,9 @@ export default {
   data: () => ({
     width: 400,
     height: 400,
-    code: "for-test",
+    ticker: {
+      code: ""
+    },
     // pieData: [
     //   {
     //     volume: 200,
@@ -94,9 +96,31 @@ export default {
       return `translate(${this.width / 2},${this.height / 2})`;
     },
     pieData: function() {
-      if (this.code.length > 0) {
+      if (this.ticker.code.length > 0) {
+        const timeSelect = this.ticker.time;
+        const timeNow = moment();
+        let timeBeg = moment(timeSelect).subtract(
+          this.$store.state.timeRange / 2,
+          "minutes"
+        );
+        let timeEnd = moment(timeSelect).add(
+          this.$store.state.timeRange / 2,
+          "minutes"
+        );
+        if (timeEnd.isAfter(timeNow)) {
+          timeEnd = timeNow;
+          timeBeg = moment(timeNow).subtract(
+            this.$store.state.timeRange,
+            "minutes"
+          );
+        }
+
         const groups = this.$store.state.ticker.records
-          .filter(elem => elem.code === this.code)
+          .filter(
+            elem =>
+              elem.code === this.ticker.code &&
+              elem.time.isBetween(timeBeg, timeEnd)
+          )
           .reduce((acc, value) => {
             (acc[value.direction] = acc[value.direction] || []).push(value);
             return acc;
@@ -197,7 +221,8 @@ export default {
     $("#chartModal").on(
       "show.bs.modal",
       function() {
-        this.code = this.$store.state.currentCode;
+        // this.code = this.$store.state.currentCode;
+        this.ticker = this.$store.state.selectedTicker;
       }.bind(this)
     );
     // $("#chartModal").modal("show");

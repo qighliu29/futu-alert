@@ -16,8 +16,9 @@
                         time range
                     </a>
                 </li>
-                <li v-show="showSlider" @mouseleave="toggleSlider" style="padding-left: 15px;">
-                    <input id="time-slider" data-slider-id="time-range-slider" type="text" data-slider-handle="custom"/>
+                <li id="range-slider" v-show="showSlider" @mouseleave="toggleSlider">
+                    <input type="range" min="0" max="60" step="1" v-model="timeRange" class="navbar-text">
+                    <span class="navbar-text">{{ timeRange }}</span>
                 </li>
             </ul>
         </li>
@@ -36,6 +37,17 @@ export default {
     }),
     showLabel: function() {
       return !this.showSlider;
+    },
+    timeRange: {
+      get() {
+        return this.$store.state.timeRange;
+      },
+      set(value) {
+        this.$store.commit({
+          type: "SET_TIME_RANGE",
+          range: value
+        });
+      }
     }
   },
   methods: {
@@ -58,14 +70,6 @@ export default {
     ...Vuex.mapMutations({
       toggleAutoMerge: "TOGGLE_AUTO_MERGING"
     })
-  },
-  mounted: function() {
-    $("#time-slider").slider({
-      min: 0,
-      max: 60,
-      value: 30,
-      tooltip_position: "bottom"
-    });
   }
 };
 </script>
@@ -131,33 +135,33 @@ export default {
 #settings-button {
   cursor: pointer;
 }
-</style>
 
-<style lang="scss">
-#time-range-slider {
-  margin-top: 20px;
-  margin-bottom: 20px;
-  width: 100px;
-
-  .slider-track {
-    box-shadow: inset 0px 2px 4px rgba(0, 0, 0, 0.7),
-      inset 0px -1px 1px rgba(0, 0, 0, 0.1);
-
-    .slider-selection {
-      box-shadow: inherit;
-    }
+#range-slider {
+  input {
+    width: 100px;
+    height: 21px;
   }
 
-  .slider-handle.custom::before {
-    content: "";
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    background: -webkit-linear-gradient(#e3e3e3, #fdfdfd);
-    border: 4px solid #f2f2f2;
-    border-radius: 100%;
-    box-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1),
-      inset 1px 1px 1px rgba(0, 0, 0, 0.05), 1px 4px 10px rgba(0, 0, 0, 0.3);
+  span {
+    position: relative;
+    width: 40px;
+    margin-left: 0;
+    text-align: center;
+    border-radius: 3px;
+    background-color: #fff;
+    color: invert(#fff);
+
+    &::after {
+      content: "";
+      width: 0;
+      height: 0;
+      position: absolute;
+      border-top: 5px solid transparent;
+      border-right: 5px solid #fff;
+      border-bottom: 5px solid transparent;
+      top: 6px;
+      left: -5px;
+    }
   }
 }
 </style>

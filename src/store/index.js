@@ -11,6 +11,10 @@ const initState = {
     tickerListener: [],
     autoMerging: false,
     currentCode: '',
+    selectedTicker: {
+        code: '',
+    },
+    timeRange: 30,
 };
 
 const mutations = {
@@ -22,6 +26,12 @@ const mutations = {
     },
     [muttypes.SET_CURRENT_CODE](state, { code }) {
         state.currentCode = code;
+    },
+    [muttypes.SET_SELECTED_TICKER](state, { selected }) {
+        state.selectedTicker = selected;
+    },
+    [muttypes.SET_TIME_RANGE](state, { range }) {
+        state.timeRange = range;
     },
 };
 

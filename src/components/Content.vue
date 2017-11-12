@@ -72,9 +72,13 @@ export default {
     $("#ticker").data(
       "onClickRow",
       function(row) {
+        // this.$store.commit({
+        //   type: "SET_CURRENT_CODE",
+        //   code: row["code"]
+        // });
         this.$store.commit({
-          type: "SET_CURRENT_CODE",
-          code: row["code"]
+          type: "SET_SELECTED_TICKER",
+          selected: row
         });
         $("#chartModal").modal("show");
       }.bind(this)

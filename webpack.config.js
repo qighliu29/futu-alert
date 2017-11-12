@@ -15,7 +15,6 @@ const SCRIPTS = [
     'https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.5/howler', // howler has a 'core' dist
     'https://cdnjs.cloudflare.com/ajax/libs/push.js/1.0.5/push',
     'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment',
-    'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.9.0/bootstrap-slider',
     'https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3',
 ];
 
