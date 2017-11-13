@@ -100,3 +100,11 @@ export default {
 }
 </style>
 
+<style lang="scss">
+#ticker {
+  tbody tr {
+    cursor: pointer;
+  }
+}
+</style>
+

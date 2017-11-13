@@ -103,7 +103,6 @@ module.exports = env => ({
                     'https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/flatly/bootstrap.min.css',
                     'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css',
                     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css',
-                    'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/9.9.0/css/bootstrap-slider.min.css',
                 ],
                 // scripts
                 body: env === 'development' ? SCRIPTS.map(url => `${url}.js`) : SCRIPTS.map(url => `${url}.min.js`),
