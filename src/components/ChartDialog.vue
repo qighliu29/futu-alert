@@ -97,13 +97,12 @@ export default {
     },
     pieData: function() {
       if (this.ticker.code.length > 0) {
-        const timeSelect = this.ticker.time;
         const timeNow = moment();
-        let timeBeg = moment(timeSelect).subtract(
+        let timeBeg = moment(this.ticker.time).subtract(
           this.$store.state.timeRange / 2,
           "minutes"
         );
-        let timeEnd = moment(timeSelect).add(
+        let timeEnd = moment(this.ticker.time).add(
           this.$store.state.timeRange / 2,
           "minutes"
         );
