@@ -8,7 +8,7 @@
 - Auto merging identical ticker(potential)
 - Donut🍩 chart show BUY/SELL power
 
-![Image of Donut](https://github.com/qighliu29/futu-alert/screenshots/donut.png)
+![Image of Donut](https://github.com/qighliu29/futu-alert/blob/master/screenshots/donut.png)
 
 ## usage
 
