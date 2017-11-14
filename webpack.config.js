@@ -1,5 +1,9 @@
 const path = require('path');
+const webpack = require('webpack');
+const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+const BabelWebpackPlugin = require('babel-minify-webpack-plugin');
 
 const PATHS = {
     src: path.join(__dirname, 'src'),
@@ -12,13 +16,13 @@ const SCRIPTS = [
     'https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table',
     'https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.2/vue.runtime',
     'https://cdnjs.cloudflare.com/ajax/libs/vuex/3.0.0/vuex',
-    'https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.5/howler', // howler has a 'core' dist
+    // 'https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.5/howler', // howler has a 'core' dist
     'https://cdnjs.cloudflare.com/ajax/libs/push.js/1.0.5/push',
     'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment',
     'https://cdnjs.cloudflare.com/ajax/libs/d3/4.11.0/d3',
 ];
 
-module.exports = env => ({
+const common = {
     entry: path.join(PATHS.src, 'app.js'),
     output: {
         path: PATHS.dist,
@@ -89,6 +93,38 @@ module.exports = env => ({
         moment: 'moment',
         d3: 'd3',
     },
+};
+
+const development = merge([
+    common,
+    {
+        devtool: 'source-map',
+        devServer: {
+            // Enable history API fallback so HTML5 History API based
+            // routing works. Good for complex setups.
+            historyApiFallback: true,
+
+            // Display only errors to reduce the amount of output.
+            stats: 'errors-only',
+        },
+    },
+]);
+
+const production = merge([
+    common,
+    {
+        plugins: [
+            new webpack.optimize.CommonsChunkPlugin({
+                name: 'manifest',
+                minChunks: Infinity,
+            }),
+            new CleanWebpackPlugin([PATHS.dist]),
+            new BabelWebpackPlugin(),
+        ],
+    },
+]);
+
+const htmlPage = env => ({
     plugins: [
         new HtmlWebpackPlugin({
             // Required
@@ -105,8 +141,28 @@ module.exports = env => ({
                     'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css',
                 ],
                 // scripts
-                body: env === 'development' ? SCRIPTS.map(url => `${url}.js`) : SCRIPTS.map(url => `${url}.min.js`),
+                body: env === 'production' ? SCRIPTS.map(url => `${url}.min.js`).concat([
+                    'https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.5/howler.core.min.js',
+                ]) : SCRIPTS.map(url => `${url}.js`).concat([
+                    'https://cdnjs.cloudflare.com/ajax/libs/howler/2.0.5/howler.js',
+                ]),
             },
         }),
     ],
 });
+
+// this helps vue drop the development-only code
+const nodeEnv = env => ({
+    plugins: [
+        new webpack.DefinePlugin({
+            'process.env': {
+                NODE_ENV: JSON.stringify(env),
+            },
+        }),
+    ],
+});
+
+module.exports = env => merge([(env === 'production' ? production : development)].concat([
+    htmlPage(env),
+    nodeEnv(env),
+]));
