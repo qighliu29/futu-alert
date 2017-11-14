@@ -61,7 +61,7 @@ Vue.component("websocket", {
 
         const ticker = {
           code: dataObj["code"]["0"],
-          time: moment(dataObj["time"]["0"], "YYYY-MM-DD HH:mm:ss"),
+          time: moment(dataObj["time"]["0"] + " -0500", "YYYY-MM-DD HH:mm:ss Z"),
           price: +dataObj["price"]["0"],
           volume: +dataObj["volume"]["0"],
           direction: dataObj["ticker_direction"]["0"].slice(3)
