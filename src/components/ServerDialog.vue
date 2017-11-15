@@ -39,7 +39,7 @@ export default {
     }
   },
   mounted: function() {
-    $("#serverModal").modal("show");
+    // $("#serverModal").modal("show");
   }
 };
 </script>

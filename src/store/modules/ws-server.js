@@ -18,3 +18,7 @@ export default {
     state: initState,
     mutations,
 };
+
+export const serverLocalReducer = state => ({
+    address: state.address,
+});

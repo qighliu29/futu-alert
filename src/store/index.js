@@ -1,4 +1,5 @@
-import wsServer from './modules/ws-server.js';
+import VuexPersist from 'vuex-persist';
+import wsServer, { serverLocalReducer } from './modules/ws-server.js';
 import ticker from './modules/ticker.js';
 import * as actions from './actions.js';
 import * as muttypes from './mutation-types.js';
@@ -6,6 +7,19 @@ import * as muttypes from './mutation-types.js';
 Vue.use(Vuex); // eslint-disable-line no-undef
 
 const debug = process.env.NODE_ENV === 'development';
+
+const vuexLocal = new VuexPersist({
+    key: 'ticker-mon',
+    storage: window.localStorage,
+    reducer: state => ({
+        autoMerging: state.autoMerging,
+        timeRange: state.timeRange,
+        // module: wsServer
+        wsServer: serverLocalReducer(state.wsServer),
+    }),
+    filter: mutation => (muttypes.savedMutation.indexOf(mutation.type) >= 0),
+    strictMode: debug,
+});
 
 const initState = {
     tickerListener: [],
@@ -43,8 +57,11 @@ export default new Vuex.Store({
     },
     state: initState,
     getters: {},
-    mutations,
+    mutations: debug ? {
+        ...mutations,
+        RESTORE_MUTATION: vuexLocal.RESTORE_MUTATION,
+    } : mutations,
     actions,
-    plugins: [],
+    plugins: [vuexLocal.plugin],
     strict: debug,
 });
